@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import Nav from "./components/Nav";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import "./App.css";
+import { BrowserRouter, Route } from "react-router-dom";
+import { Component } from "react";
+import axios from 'axios'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {}
+  componentDidMount = () => {
+    axios.get("user").then(
+      res => {
+        this.setState({
+          user: res.data
+        })
+      }, err => {
+        console.log(err);
+      }
+    )
+  }
+  render(){
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Nav user = {this.state.user}/>
+          <main className="form-signin">
+            <Route path="/" exact component={() => <Home user={this.state.user}/>} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
+          </main>
+        </BrowserRouter>
+      </div>
+    );
+  }
 }
-
-export default App;
