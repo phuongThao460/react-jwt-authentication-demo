@@ -1,46 +1,49 @@
 import React, { Component } from "react";
+//import Login from '../pages/Login'
 import { Link } from "react-router-dom";
-export default class Nav extends Component {
-  render() {
-    let buttons;
 
-    if (this.props.user) {
-      buttons = (
+class Nav extends Component {
+  render() {
+    var menu;
+    const {data} = this.props.location;
+    if (data.email === "") {
+      menu = (
         <ul className="navbar-nav me-auto mb-2 mb-md-0">
-          <li className="nav-item">
-            <Link className="nav-link" to="/">
-              Log out
-            </Link>
-          </li>
-        </ul>
-      );
-    } else {
-      buttons = (
-        <ul className="navbar-nav me-auto mb-2 mb-md-0">
-          <li className="nav-item">
-            <Link className="nav-link" to="/login" onClick={() => localStorage.clear()}>
+          <li>{data.email}</li>
+          <li className="nav-item active">
+            <Link to="/login" className="nav-link">
               Login
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/register">
+          <li className="nav-item active">
+            <Link to="/register" className="nav-link">
               Register
             </Link>
           </li>
         </ul>
       );
-    }
-    return (
-      <>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container-fluid">
-            <Link className="nav-link active" to="/">
-              Home
+    } else {
+      menu = (
+        <ul className="navbar-nav me-auto mb-2 mb-md-0">
+          <li className="nav-item active">
+            <Link to="/login" className="nav-link">
+              Logout
             </Link>
-            <div>{buttons}</div>
-          </div>
-        </nav>
-      </>
+          </li>
+        </ul>
+      );
+    }
+
+    return (
+      <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        <div className="container-fluid">
+          <Link to="/" className="navbar-brand">
+            Home
+          </Link>
+          <div>{menu}</div>
+        </div>
+      </nav>
     );
   }
 }
+export default Nav;
